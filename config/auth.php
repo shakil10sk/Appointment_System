@@ -40,6 +40,15 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'admin' => [
+            'driver' => 'session',
+            'provider' => 'admins',
+        ],
+
+        'mentor' => [
+            'driver' => 'session',
+            'provider' => 'mentors',
+        ],
 
         'api' => [
             'driver' => 'token',
@@ -69,6 +78,16 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\User::class,
+        ],
+
+        'admins' => [
+            'driver' => 'eloquent',
+            'model' => App\Admin::class,
+        ],
+
+        'mentors' => [
+            'driver' => 'eloquent',
+            'model' => App\Menotr::class,
         ],
 
         // 'users' => [

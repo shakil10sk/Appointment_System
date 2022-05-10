@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +18,29 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+//admin
+Route::prefix('/admin')->namespace('Admin')->group(function(){
+
+    Route::match(['get','post'],'/','AdminController@Login');
+    Route::group(['middleware'=>['admin']],function(){
+        Route::get('dashboard','AdminController@Dashboard');
+    });
+
+});
+
+//mentor
+Route::prefix('/mentor')->namespace('Mentor')->group(function(){
+
+    Route::match(['get','post'],'/','MentorController@Login');
+    Route::group(['middleware'=>['mentor']],function(){
+        Route::get('dashboard','MentorController@Dashboard');
+    });
+
+});
+
+
