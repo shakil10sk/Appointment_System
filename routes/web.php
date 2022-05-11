@@ -15,20 +15,25 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    // return view('welcome');
-    return view('layouts.enterprener.master');
+// Route::get('/', function () {
+//     // return view('welcome');
+//     return view('layouts.enterprener.home');
 
-});
+// });
+
+Route::get('/','IndexController@home');
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+Route::get('mentor/list','EnterprenerController@index')->name('mentor.list');
+Route::get('mentor/{id}','EnterprenerController@showDoctor');
+
 // Enterprener
 Route::prefix('/user')->group(function(){
     Route::group(['middleware'=>['auth']],function(){
-        Route::get('index','EnterprenerController@index');
+        Route::post('appointment','AppointmentController@store')->name('appointment');
     });
 });
 

@@ -17,9 +17,9 @@
                         </button>
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul class="navbar-nav main-menu ml-auto mr-auto">
-                                <li class="active"><a href="{{url('/')}}">Home</a></li>
-                                <li class=""><a href="#Doctors">Doctors</a></li>
-                                                                <li class=""><a href="#Blog">Blog</a></li>
+                                <li class="@if(Request::url() === url('/')) active @endif"><a href="{{url('/')}}">Home</a></li>
+                                <li class="@if(Request::url() === route('mentor.list')) active @endif"><a href="{{ route('mentor.list') }}">Doctors</a></li>
+                                <li class=""><a href="#Blog">Blog</a></li>
                                 <li class=""><a href="#Contact">Contact</a></li>
                             </ul>
                             <div class="language-select d-none d-lg-block">

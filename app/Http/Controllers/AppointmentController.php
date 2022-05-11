@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Menotr;
-use DB;
-class EnterprenerController extends Controller
+use App\Appointment;
+use Auth;
+use Carbon\Carbon;
+class AppointmentController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,12 +15,7 @@ class EnterprenerController extends Controller
      */
     public function index()
     {
-        $category_list = DB::table('menotrs')->select('category')->groupBy('category')->get();
-        $mentor_list = Menotr::orderBy('id','DESC')->take(50)->get();
-        return view('enterprener.mentor_list',[
-            'mentor_list' => $mentor_list,
-            'category_list' => $category_list,
-        ]);
+        //
     }
 
     /**
@@ -27,12 +23,9 @@ class EnterprenerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function showDoctor($id)
+    public function create()
     {
-        $mentor_info = Menotr::findOrFail($id);
-        return view('enterprener.book',[
-            'mentor_info' => $mentor_info,
-        ]);
+        //
     }
 
     /**
@@ -43,7 +36,39 @@ class EnterprenerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $request->validate([
+            'methode' => 'required',
+            'appointment_date' => 'required',
+        ]);
+
+        $appointment = new Appointment();
+
+        $appointment['user_id'] = Auth::user()->id ?? null;
+        $appointment['mentor_id'] = $request->mentor_id;
+        $appointment['reson'] = $request->reson;
+        $appointment['method'] = $request->method;
+        $appointment['medium'] = $request->medium;
+        $appointment['details'] = $request->details;
+        $appointment['date'] = $request->date;
+        $appointment['is_paid'] = 0;
+        $appointment['is_approved'] = 0;
+        $appointment['created_at'] = Carbon::now();
+
+        if($appointment['document']) {
+            $destinationPath = storage_path( 'app/public/assets/document/appointment' );
+            $file = $appointment['document'];
+            $fileName = time() . '.'.$file->clientExtension();
+            $file->move($destinationPath, $fileName );
+
+            $appointment['document'] = $fileName;
+        }
+
+        if($appointment->save()){
+            return redirect()->back()->with('message','Appointment Request Success');
+        }else{
+            return redirect()->back()->with('message','Appointment Didnt Send');
+        }
     }
 
     /**

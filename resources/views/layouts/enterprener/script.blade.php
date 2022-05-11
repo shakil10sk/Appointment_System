@@ -3,7 +3,9 @@
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 
 <!-- jquery -->
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://script.viserlab.com/docrib/assets/templates/basic/js/jquery-3.3.1.min.js"></script>
+{{-- <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script> --}}
+{{-- <script src="https://script.viserlab.com/docrib/assets/templates/basic/js/jquery-3.3.1.min.js"></script> --}}
+<script src="{{asset('assets/js/jquery_3.0.0.js')}}"></script>
 <!-- migarate-jquery -->
 <script src="https://script.viserlab.com/docrib/assets/templates/basic/js/jquery-migrate-3.0.0.js"></script>
 <!-- bootstrap js -->
@@ -141,5 +143,6 @@ $('.subs').on('click',function () {
     })(window, document);
     adroll.track("pageView");
 </script>
+@yield('script')
 </body>
 </html>
