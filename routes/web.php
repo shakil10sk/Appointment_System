@@ -16,12 +16,23 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    // return view('welcome');
+    return view('layouts.enterprener.master');
+
 });
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+// Enterprener
+Route::prefix('/user')->group(function(){
+    Route::group(['middleware'=>['auth']],function(){
+        Route::get('index','EnterprenerController@index');
+    });
+});
+
+
 
 //admin
 Route::prefix('/admin')->namespace('Admin')->group(function(){
@@ -42,5 +53,6 @@ Route::prefix('/mentor')->namespace('Mentor')->group(function(){
     });
 
 });
+
 
 
