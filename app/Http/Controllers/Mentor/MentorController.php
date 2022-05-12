@@ -15,7 +15,12 @@ class MentorController extends Controller
 {
     //Dashboard
     public function Dashboard(){
-        return view('mentor.index');
+        $mentor_id = Auth::guard('mentor')->user()->id;
+        $pendding = Appointment::where('mentor_id',$mentor_id)->where('is_approved',0)->count();
+        $accept = Appointment::where('mentor_id',$mentor_id)->where('is_approved',1)->count();
+        $reject = Appointment::where('mentor_id',$mentor_id)->where('is_approved',2)->count();
+        $complete = Appointment::where('mentor_id',$mentor_id)->where('is_approved',3)->count();
+        return view('mentor.index',compact('pendding','accept','reject','complete'));
     }
 
     //Login
@@ -139,7 +144,9 @@ class MentorController extends Controller
 
     //PaymentsInfo
     public function PaymentsInfo(){
-        $payments = PaymentSystem::with('user')->get();
+        $mentor_id = Auth::guard('mentor')->user()->id;
+
+        $payments = PaymentSystem::with('user')->where('mentor_id',$mentor_id)->get();
         return view('mentor.payment_info',compact('payments'));
     }
 
@@ -157,6 +164,30 @@ class MentorController extends Controller
         $payments->status = 2;
         $payments->save();
         return redirect()->back();
+    }
+
+    //PasswordChange
+    public function PasswordChange(){
+        return view('mentor.password_change');
+    }
+
+    //PasswordStore
+    public function PasswordStore(Request $request){
+        $mentor_id = Auth::guard('mentor')->user()->id;
+        $mentor = Auth::guard('mentor')->user()->findOrFail($mentor_id);
+
+        $check = Hash::check($request['old_password'],$mentor['password']);
+        if($check){
+            $mentor->password = Hash::make($request['new_password']);
+            $mentor->save();
+            return redirect('/mentor/dashboard');
+        }else{
+            return redirect()->back();
+        }
+
+
+
+
     }
 
 

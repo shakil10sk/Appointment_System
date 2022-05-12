@@ -52,6 +52,8 @@ Route::prefix('/mentor')->namespace('Mentor')->group(function(){
         Route::get('payment-accept/{id}','MentorController@PaymentAccept');
         Route::get('payment-reject/{id}','MentorController@PaymentReject');
         Route::get('payments-info','MentorController@PaymentsInfo');
+        Route::get('password-change','MentorController@PasswordChange');
+        Route::post('password-store','MentorController@PasswordStore');
         Route::get('logout','MentorController@Logout');
     });
 
