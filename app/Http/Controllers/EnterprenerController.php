@@ -115,13 +115,7 @@ class EnterprenerController extends Controller
             'mentor_info' => $mentor_info,
         ]);
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+  
     public function edit($id)
     {
         //

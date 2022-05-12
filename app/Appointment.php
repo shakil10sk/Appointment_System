@@ -10,6 +10,7 @@ class Appointment extends Model
         'user_id','mentor_id','reson','document','method','medium','details','date','is_paid','is_approved'
     ];
     
+
     public function user(){
         return $this->belongsTo(User::class);
     }

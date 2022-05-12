@@ -27,6 +27,9 @@
               Menu
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+
+              <a class="dropdown-item" href="{{ url('/mentor/password-change') }}">Password Change</a>
+
               <a class="dropdown-item" href="{{ url('/mentor/logout') }}">Logout</a>
             </div>
           </div>
