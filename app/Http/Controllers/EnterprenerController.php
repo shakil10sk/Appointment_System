@@ -3,7 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Menotr;
+use App\User;
+use App\Appointment;
+use App\PaymentSystem;
+use Carbon\Carbon;
+use Auth;
+use DB;
 class EnterprenerController extends Controller
 {
     /**
@@ -13,7 +19,13 @@ class EnterprenerController extends Controller
      */
     public function index()
     {
-        dd('shakil');
+        $category_list = DB::table('menotrs')->select('category')->groupBy('category')->get();
+        $mentor_list = Menotr::orderBy('id','DESC')->take(50)->get();
+
+        return view('enterprener.mentor_list',[
+            'mentor_list' => $mentor_list,
+            'category_list' => $category_list,
+        ]);
     }
 
     /**
@@ -21,9 +33,13 @@ class EnterprenerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function showDoctor($id)
     {
-        //
+        $mentor_info = Menotr::findOrFail($id);
+
+        return view('enterprener.book',[
+            'mentor_info' => $mentor_info,
+        ]);
     }
 
     /**
@@ -32,9 +48,51 @@ class EnterprenerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function payment(Request $request)
     {
-        //
+        $request->validate([
+            'payment_system' => 'required',
+            'acc_no' => 'required',
+            'details' => 'required',
+        ]);
+
+        $payment = new PaymentSystem();
+
+        $payment['user_id'] = Auth::user()->id;
+        $payment['mentor_id'] = $request->mentor_id;
+        $payment['type'] = $request->payment_system;
+        $payment['account_no'] = $request->acc_no;
+        $payment['detals'] = $request->details;
+        $payment['status'] = 0;
+        $payment['created_at'] = Carbon::now();
+
+        if($payment->save()){
+
+            $appointment = Appointment::where('user_id',Auth::user()->id)->update(['is_paid'=>1]);
+
+            if($appointment){
+                // return response()->json([
+                //     'status' => 'success',
+                //     'msg' => 'Payment Success',
+                // ]);
+                return redirect()->back()->with('message','Payment Success');
+            }else{
+                // return response()->json([
+                //     'status' => 'error',
+                //     'msg' => 'Payment Status Not updated',
+                // ]);
+                return redirect()->back()->with('message','Payment Status not updated ');
+            }
+
+        }else{
+            return redirect()->back()->with('message','Payment Not Success');
+
+            // return response()->json([
+            //     'status' => 'error',
+            //     'msg' => 'Payment Not Success',
+            // ]);
+        }
+
     }
 
     /**
@@ -43,9 +101,19 @@ class EnterprenerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function Profile($id)
     {
-        //
+        $profile_info = User::findOrFail($id);
+        $appointment = Appointment::where(['user_id' => $id,'is_approved'=> 1,'is_paid'=> 0])->first() ?? null;
+        $mentor_info = null;
+        if(!is_null($appointment)){
+            $mentor_info = Menotr::findOrFail($appointment->mentor_id);
+        }
+        return view('enterprener.profile',[
+            'profile_info' => $profile_info,
+            'appointment' => $appointment,
+            'mentor_info' => $mentor_info,
+        ]);
     }
 
     /**

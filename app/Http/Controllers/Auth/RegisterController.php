@@ -69,14 +69,13 @@ class RegisterController extends Controller
     {
 
         if($data['image']) {
-            $destinationPath = storage_path( 'app/public/assets/images/user' );
+            $destinationPath = public_path( 'assets/images/user' );
             $file = $data['image'];
             $fileName = time() . '.'.$file->clientExtension();
             $file->move($destinationPath, $fileName );
 
             $data['image'] = $fileName;
         }
-
         return User::create([
             'name' => $data['name'],
             'startup_name' => $data['startup_name'],
