@@ -50,7 +50,6 @@ class EnterprenerController extends Controller
      */
     public function payment(Request $request)
     {
-        dd($request->all());
         $request->validate([
             'payment_system' => 'required',
             'acc_no' => 'required',
@@ -115,9 +114,8 @@ class EnterprenerController extends Controller
             'appointment' => $appointment,
             'mentor_info' => $mentor_info,
         ]);
- //
-n \Illuminate\Http\Response
-     */
+    }
+  
     public function edit($id)
     {
         //

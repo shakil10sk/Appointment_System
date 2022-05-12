@@ -15,13 +15,31 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     // return view('welcome');
+//     return view('layouts.enterprener.home');
+
+// });
+
+Route::get('/','IndexController@home');
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('mentor/list','EnterprenerController@index')->name('mentor.list');
+Route::get('mentor/{id}','EnterprenerController@showDoctor');
+
+// Enterprener
+Route::prefix('/user')->group(function(){
+    Route::group(['middleware'=>['auth']],function(){
+        Route::post('appointment','AppointmentController@store')->name('appointment');
+        Route::get('profile/{id}','EnterprenerController@profile')->name('user.profile');
+        Route::post('payment','EnterprenerController@Payment');
+    });
+});
+
+
 
 //admin
 Route::prefix('/admin')->namespace('Admin')->group(function(){
@@ -53,10 +71,11 @@ Route::prefix('/mentor')->namespace('Mentor')->group(function(){
         Route::get('payment-reject/{id}','MentorController@PaymentReject');
         Route::get('payments-info','MentorController@PaymentsInfo');
         Route::get('password-change','MentorController@PasswordChange');
-        Route::post('password-store','MentorController@PasswordStore');
+        Route::post('password-store','MentorController@PasswordStore');n
         Route::get('logout','MentorController@Logout');
     });
 
 });
+
 
 

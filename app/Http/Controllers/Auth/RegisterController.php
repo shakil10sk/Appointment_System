@@ -8,7 +8,7 @@ use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-
+use Carbon\Carbon;
 class RegisterController extends Controller
 {
     /*
@@ -51,7 +51,10 @@ class RegisterController extends Controller
     {
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
+            'startup_name' => ['required', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'phone' => ['required', 'string','max:11', 'unique:users'],
+            'image' => ['image','mimes:jpeg,jpg,png,gif','max:2048'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
     }
@@ -64,10 +67,26 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+
+        if($data['image']) {
+            $destinationPath = public_path( 'assets/images/user' );
+            $file = $data['image'];
+            $fileName = time() . '.'.$file->clientExtension();
+            $file->move($destinationPath, $fileName );
+
+            $data['image'] = $fileName;
+        }
         return User::create([
             'name' => $data['name'],
+            'startup_name' => $data['startup_name'],
             'email' => $data['email'],
+            'phone' => $data['phone'],
+            'address' => $data['address'],
+            'image' => $data['image'],
+            'status' => 1,
             'password' => Hash::make($data['password']),
+            'created_at' => Carbon::now(),
+            'updated_at' => null,
         ]);
     }
 }
