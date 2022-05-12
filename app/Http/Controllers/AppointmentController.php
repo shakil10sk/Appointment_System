@@ -36,7 +36,6 @@ class AppointmentController extends Controller
      */
     public function store(Request $request)
     {
-
         $request->validate([
             'methode' => 'required',
             'appointment_date' => 'required',
@@ -46,18 +45,18 @@ class AppointmentController extends Controller
 
         $appointment['user_id'] = Auth::user()->id ?? null;
         $appointment['mentor_id'] = $request->mentor_id;
-        $appointment['reson'] = $request->reson;
-        $appointment['method'] = $request->method;
+        $appointment['reson'] = $request->reason;
+        $appointment['method'] = $request->methode;
         $appointment['medium'] = $request->medium;
         $appointment['details'] = $request->details;
-        $appointment['date'] = $request->date;
+        $appointment['date'] = $request->appointment_date;
         $appointment['is_paid'] = 0;
         $appointment['is_approved'] = 0;
         $appointment['created_at'] = Carbon::now();
 
-        if($appointment['document']) {
-            $destinationPath = storage_path( 'app/public/assets/document/appointment' );
-            $file = $appointment['document'];
+        if($request->hasFile('document')) {
+            $destinationPath = public_path( 'assets/document/appointment' );
+            $file = $request->document;
             $fileName = time() . '.'.$file->clientExtension();
             $file->move($destinationPath, $fileName );
 

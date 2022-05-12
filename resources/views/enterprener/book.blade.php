@@ -181,7 +181,7 @@
                                                     </div>
 
                                                     <div class="overview-date-select">
-                                                        <input type="date" class="form-control date-selec @error('appointment_date') is-invalid @enderror" name="appointment_date" onchange="confirmBookingData()" id="appointment_date" required>
+                                                        <input type="date" id="appointment_date" class="form-control date-select @error('appointment_date') is-invalid @enderror" name="appointment_date" onchange="confirmBookingData()" id="appointment_date" required>
 
                                                         @error('appointment_date')
                                                             <span class="invalid-feedback" role="alert">
@@ -521,7 +521,6 @@
                                                                 </div>
                                                                 <div class="col-lg-12 form-group">
                                                                     <div class="form-group">
-                                                                      {{-- <label for="methode">Appointment Methode</label> --}}
                                                                       <select class="form-control @error('methode') is-invalid @enderror" name="methode" onchange="confirmBookingData()" id="methode">
                                                                         <option selected value="">Methode*</option>
                                                                         <option value="0">Off-Line</option>
@@ -649,7 +648,6 @@
     $(document).ready(function(){
 
         $("#medium_select").hide();
-
     })
     function confirmBookingData(){
         $("#date").text($("#appointment_date").val());
@@ -662,6 +660,11 @@
             $("#medium_select").hide();
         }
     }
+
+    // $( function() {
+
+    // } );
+
 </script>
 
 @endsection

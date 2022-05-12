@@ -34,6 +34,8 @@ Route::get('mentor/{id}','EnterprenerController@showDoctor');
 Route::prefix('/user')->group(function(){
     Route::group(['middleware'=>['auth']],function(){
         Route::post('appointment','AppointmentController@store')->name('appointment');
+        Route::get('profile/{id}','EnterprenerController@profile')->name('user.profile');
+        Route::post('payment','EnterprenerController@Payment');
     });
 });
 

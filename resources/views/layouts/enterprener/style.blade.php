@@ -47,6 +47,7 @@
     <!-- <link rel="stylesheet" href="https://script.viserlab.com/docrib/assets/templates/basic/css/color.php?color1=FF8787"> -->
     <!-- <link rel="stylesheet" href="assets/templates/basic/css/color.css"> -->
 
+    @yield('style')
     <title> Docrib - Home</title>
     <meta name="title" Content="Docrib - Home">
     <meta name="description" content="DOCRIB is the best place to find your preferable specialist and doctors. So feel free to contact us and get the best experience.">
