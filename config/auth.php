@@ -87,7 +87,7 @@ return [
 
         'mentors' => [
             'driver' => 'eloquent',
-            'model' => App\Menotr::class,
+            'model' => App\Mentor::class,
         ],
 
         // 'users' => [

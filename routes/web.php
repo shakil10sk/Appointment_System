@@ -55,8 +55,17 @@ Route::prefix('/admin')->namespace('Admin')->group(function(){
 Route::prefix('/mentor')->namespace('Mentor')->group(function(){
 
     Route::match(['get','post'],'/','MentorController@Login');
+    Route::get('registration','MentorController@Registration');
+    Route::post('registration-store','MentorController@RegistrationStore');
+
     Route::group(['middleware'=>['mentor']],function(){
         Route::get('dashboard','MentorController@Dashboard');
+        Route::get('appointment-lists','MentorController@AppointLists');
+        Route::get('appointment-info/{id}','MentorController@AppointInfo');
+        Route::get('appointment-pending/{id}','MentorController@AppointmentPending');
+        Route::get('appointment-reject/{id}','MentorController@AppointmentReject');
+        Route::get('appointment-accept/{id}','MentorController@AppointmentAccepted');
+        Route::get('logout','MentorController@Logout');
     });
 
 });
