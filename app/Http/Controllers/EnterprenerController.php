@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Menotr;
+use App\Mentor;
 use App\User;
 use App\Appointment;
 use App\PaymentSystem;
@@ -19,8 +19,8 @@ class EnterprenerController extends Controller
      */
     public function index()
     {
-        $category_list = DB::table('menotrs')->select('category')->groupBy('category')->get();
-        $mentor_list = Menotr::orderBy('id','DESC')->take(50)->get();
+        $category_list = DB::table('mentors')->select('category')->groupBy('category')->get();
+        $mentor_list = Mentor::orderBy('id','DESC')->take(50)->get();
 
         return view('enterprener.mentor_list',[
             'mentor_list' => $mentor_list,
@@ -35,7 +35,7 @@ class EnterprenerController extends Controller
      */
     public function showDoctor($id)
     {
-        $mentor_info = Menotr::findOrFail($id);
+        $mentor_info = Mentor::findOrFail($id);
 
         return view('enterprener.book',[
             'mentor_info' => $mentor_info,
@@ -107,7 +107,7 @@ class EnterprenerController extends Controller
         $appointment = Appointment::where(['user_id' => $id,'is_approved'=> 1,'is_paid'=> 0])->first() ?? null;
         $mentor_info = null;
         if(!is_null($appointment)){
-            $mentor_info = Menotr::findOrFail($appointment->mentor_id);
+            $mentor_info = Mentor::findOrFail($appointment->mentor_id);
         }
         return view('enterprener.profile',[
             'profile_info' => $profile_info,
@@ -115,7 +115,7 @@ class EnterprenerController extends Controller
             'mentor_info' => $mentor_info,
         ]);
     }
-  
+
     public function edit($id)
     {
         //
