@@ -59,6 +59,7 @@ class EnterprenerController extends Controller
         $payment = new PaymentSystem();
 
         $payment['user_id'] = Auth::user()->id;
+        $payment['mentor_id'] = $request->mentor_id;
         $payment['type'] = $request->payment_system;
         $payment['account_no'] = $request->acc_no;
         $payment['detals'] = $request->details;

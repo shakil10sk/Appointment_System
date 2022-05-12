@@ -66,6 +66,7 @@
                         {{-- <form action="javascript:void(0)" id="PaymnetSystem" method="POST" onsubmit="PaymnetSystem(event)"> --}}
                         {{-- <form action="javascript:void(0)" id="PaymnetSystem" method="POST"> --}}
                             @csrf
+                            <input type="hidden" name="mentor_id" value="{{$mentor_info->id ?? ""}}">
                             <div class="modal-body">
                                 <div class="form-group">
                                   <select class="form-control" required name="payment_system" id="payment_system">
