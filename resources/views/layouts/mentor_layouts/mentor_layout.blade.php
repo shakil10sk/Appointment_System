@@ -137,6 +137,7 @@
         "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
       });
 
+
     });
   </script>
   <script>
@@ -181,5 +182,22 @@
 
         })
     </script>
+
+
+    <script>
+        $('.communication').on('click', function () {
+                var recordid = $(this).attr('recordid');
+                $.ajax({
+                    type: "get",
+                    url: "/mentor/appointment-communication/"+recordid,
+                    cache: false,
+                    success: function(data){
+                        document.getElementById("HiddenId").value  = data;
+                     }
+                });
+
+
+            })
+        </script>
 </body>
 </html>

@@ -47,6 +47,11 @@ Route::prefix('/mentor')->namespace('Mentor')->group(function(){
         Route::get('appointment-pending/{id}','MentorController@AppointmentPending');
         Route::get('appointment-reject/{id}','MentorController@AppointmentReject');
         Route::get('appointment-accept/{id}','MentorController@AppointmentAccepted');
+        Route::get('appointment-communication/{id}','MentorController@CommunicationId');
+        Route::post('communication-store','MentorController@CommunicationStore');
+        Route::get('payment-accept/{id}','MentorController@PaymentAccept');
+        Route::get('payment-reject/{id}','MentorController@PaymentReject');
+        Route::get('payments-info','MentorController@PaymentsInfo');
         Route::get('logout','MentorController@Logout');
     });
 

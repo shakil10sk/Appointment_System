@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Mentor;
 use App\Appointment;
 use App\Http\Controllers\Controller;
 use App\Mentor;
+use App\PaymentSystem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -120,6 +121,41 @@ class MentorController extends Controller
         $appoint = Appointment::where('id',$id)->first();
         $appoint->is_approved = 3;
         $appoint->save();
+        return redirect()->back();
+    }
+
+    //CommunicationId
+    public function CommunicationId($id){
+        return $id;
+    }
+
+    //CommunicationStore
+    public function CommunicationStore(Request $request){
+        $appoint = Appointment::where('id',$request['hiddenid'])->first();
+        $appoint->details = $request['details'];
+        $appoint->save();
+        return redirect()->back();
+    }
+
+    //PaymentsInfo
+    public function PaymentsInfo(){
+        $payments = PaymentSystem::with('user')->get();
+        return view('mentor.payment_info',compact('payments'));
+    }
+
+    //PaymentAccept
+    public function PaymentAccept($id){
+        $payments = PaymentSystem::where('id',$id)->first();
+        $payments->status = 1;
+        $payments->save();
+        return redirect()->back();
+    }
+
+    //PaymentReject
+    public function PaymentReject($id){
+        $payments = PaymentSystem::where('id',$id)->first();
+        $payments->status = 2;
+        $payments->save();
         return redirect()->back();
     }
 
