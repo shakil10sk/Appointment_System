@@ -12,7 +12,7 @@
         <div class="col-xl-12 col-lg-12 col-md-12 mrb-30">
             <div class="team-item d-flex flex-wrap align-items-center justify-content-between">
                 <div class="team-thumb">
-                    <img src="{{ asset('assets/images/user/'.$profile_info->image) }}"
+                    <img class="img img-fluid" src="{{ asset('assets/images/user/'.$profile_info->image) }}"
                         alt="doctor-image">
                     <div class="team-thumb-overlay">
                         <ul class="social-icon">
@@ -33,14 +33,14 @@
                     <h6 class="title">Address</h6>
                     <p>{{ $profile_info->address }}</p>
 
-
                     @if(!is_null($appointment))
-                       <h4> Appointment To : {{$mentor_info->name}}</h2>
-                        <br>
-                       <h4> Fee : {{$mentor_info->fee}}</h3>
+                       <h4> Appointment To : {{$mentor_info->full_name}}</h2>
+                        {{-- <br>
+                       <h4> Fee : {{$mentor_info->fee}}</h3> --}}
                     @endif
 
                     @if(!is_null($appointment) &&  $appointment->is_paid == 0)
+                    <h4> Fee : {{$mentor_info->fee}}</h3>
                     <div class="row">
                         <div class="col-md-4 mx-auto">
                          <div class="" style="text-align: right">
@@ -48,7 +48,14 @@
                          </div>
                         </div>
                     </div>
-                 @endif
+                    @endif
+                    @if(isset($appointment->is_paid) && $appointment->is_paid == 1)
+                        <h4> Comunicate Link :</h3>
+                            <a  href="{{$appointment->details}}" class="btn btn-info btn-md">Click To Talk</a>
+                        <h4> Appointment Date :</h3>
+                            {{$appointment->date}}
+
+                    @endif
                 </div>
             </div>
 

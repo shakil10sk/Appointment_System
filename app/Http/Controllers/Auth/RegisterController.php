@@ -68,21 +68,24 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
 
+
+        $fileName = "";
+
         if($data['image']) {
             $destinationPath = public_path( 'assets/images/user' );
             $file = $data['image'];
             $fileName = time() . '.'.$file->clientExtension();
             $file->move($destinationPath, $fileName );
-
-            $data['image'] = $fileName;
         }
+        // dd($data['image'],$fileName);
+
         return User::create([
             'name' => $data['name'],
             'startup_name' => $data['startup_name'],
             'email' => $data['email'],
             'phone' => $data['phone'],
             'address' => $data['address'],
-            'image' => $data['image'],
+            'image' => $fileName,
             'status' => 1,
             'password' => Hash::make($data['password']),
             'created_at' => Carbon::now(),

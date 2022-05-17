@@ -581,5 +581,4 @@
     </div>
     <!-- /.row (main row) -->
   </div><!-- /.container-fluid -->
-
 @endsection

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePaymentSystemsTable extends Migration
+class CreateBdLocationsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,12 @@ class CreatePaymentSystemsTable extends Migration
      */
     public function up()
     {
-        Schema::create('payment_systems', function (Blueprint $table) {
-            $table->id()->autoIncrement();
-            $table->bigInteger('user_id');
-            $table->bigInteger('mentor_id');
+        Schema::create('bd_locations', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('parent_id')->nullable();
+            $table->string('name');
             $table->tinyInteger('type');
-            $table->string('account_no');
-            $table->text('detals');
-            $table->tinyInteger('status');
+            $table->tinyInteger('status')->nullable();
             $table->timestamps();
         });
     }
@@ -32,6 +30,6 @@ class CreatePaymentSystemsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('payment_systems');
+        Schema::dropIfExists('bd_locations');
     }
 }

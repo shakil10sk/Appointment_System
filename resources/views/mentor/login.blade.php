@@ -53,7 +53,7 @@
           </div>  --}}
           <!-- /.col -->
           <div class="col-12">
-            <a href="{{ url('/mentor/registration') }}" class="text-center">Register a new membership</a>
+            <a href="{{ url('/mentor/registration') }}" class="text-center">Register as Mentor</a>
             <button type="submit" class="btn btn-primary float-right">Sign In</button>
           </div>
           <!-- /.col -->

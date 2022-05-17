@@ -7,18 +7,21 @@
                 <div class="col-lg-4 col-sm-6 mrb-30">
                     <div class="footer-widget">
                         <div class="footer-logo">
-                            <a href="#" class="site-logo"><img src="https://script.viserlab.com/docrib/assets/images/logoIcon/logo.png" alt="site-logo"></a>
+                            <a href="#" class="site-logo">
+                                {{-- <img src="https://script.viserlab.com/docrib/assets/images/logoIcon/logo.png" alt="site-logo"> --}}
+                                StartUp Clinic
+                            </a>
                         </div>
-                        <p>DOCRIB is the best place to find your preferable specialist and doctors. So feel free to contact us and get the best experience.</p>
+                        <p>StartUp Clinic is the best place to find your preferable Mentors. So feel free to contact us and get the best experience.</p>
                         <ul>
                                                             <li><i class="fas fa-headphones-alt"></i> +88-123456789</li>
                                                             <li><i class="far fa-envelope"></i> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="7d191810123d19181012531e1210">[email&#160;protected]</a></li>
-                                                            <li><i class="fas fa-location-arrow"></i> 123 New Street, Melbourne location Australia 54214</li>
+                                                            <li><i class="fas fa-location-arrow"></i> [Address &#160;protected]</li>
                                                     </ul>
 
                     </div>
                 </div>
-                <div class="col-lg-2 col-sm-6 mrb-30">
+                {{-- <div class="col-lg-2 col-sm-6 mrb-30">
                     <div class="footer-widget">
                         <h3 class="widget-title">Sector Based</h3>
                         <ul>
@@ -64,7 +67,7 @@
                                                             </ul>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
         </div>
     </div>
@@ -75,7 +78,7 @@
             <div class="col-lg-12">
                 <div class="copyright-area d-flex flex-wrap align-items-center justify-content-center">
                     <div class="copyright">
-                        <p>Copyright © 2020 by Docrib. All Rights reserved</p>
+                        <p>Copyright © 2020 by StartUp Clinic. All Rights reserved</p>
                     </div>
                 </div>
             </div>

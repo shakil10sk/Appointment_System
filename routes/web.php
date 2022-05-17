@@ -15,20 +15,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/', function () {
-//     // return view('welcome');
-//     return view('layouts.enterprener.home');
-
-// });
-
 Route::get('/','IndexController@home');
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/aboutUs', 'IndexController@AboutUs')->name('about');
 
-Route::get('mentor/list','EnterprenerController@index')->name('mentor.list');
-Route::get('mentor/{id}','EnterprenerController@showDoctor');
+
+Route::match(['get','post'],'user/mentor/list','EnterprenerController@index')->name('book.mentor.list');
+Route::get('user/mentor/{id}','EnterprenerController@showDoctor');
 
 // Enterprener
 Route::prefix('/user')->group(function(){
@@ -45,10 +41,24 @@ Route::prefix('/user')->group(function(){
 Route::prefix('/admin')->namespace('Admin')->group(function(){
 
     Route::match(['get','post'],'/','AdminController@Login');
+    Route::match(['get','post'],'/logout','AdminController@Logout');
+
     Route::group(['middleware'=>['admin']],function(){
         Route::get('dashboard','AdminController@Dashboard');
-    });
+        Route::get('mentorsList','AdminController@mentorList')->name('admin.mentorList');
+        Route::get('/accept-status/{id}','AdminController@acceptStatus')->name('admin.acceptStatus');
+        Route::get('/reject-status/{id}','AdminController@rejectStatus')->name('admin.rejectStatus');
 
+        Route::get('userList','AdminController@userList')->name('admin.userList');
+        Route::get('/enable-status/{id}','AdminController@enableStatus')->name('admin.enableStatus');
+        Route::get('/disable-status/{id}','AdminController@disableStatus')->name('admin.disableStatus');
+
+
+        Route::get('category','CategoryController@index')->name('category.list');
+        Route::post('category/store','CategoryController@store');
+        Route::get('category/{id}/edit','CategoryController@edit');
+        Route::get('category/{id}/delete','CategoryController@destroy');
+    });
 });
 
 //mentor
@@ -57,6 +67,7 @@ Route::prefix('/mentor')->namespace('Mentor')->group(function(){
     Route::match(['get','post'],'/','MentorController@Login');
     Route::get('registration','MentorController@Registration');
     Route::post('registration-store','MentorController@RegistrationStore');
+    Route::post('/getupazila','MentorController@getThana');
 
     Route::group(['middleware'=>['mentor']],function(){
         Route::get('dashboard','MentorController@Dashboard');
@@ -71,11 +82,10 @@ Route::prefix('/mentor')->namespace('Mentor')->group(function(){
         Route::get('payment-reject/{id}','MentorController@PaymentReject');
         Route::get('payments-info','MentorController@PaymentsInfo');
         Route::get('password-change','MentorController@PasswordChange');
-        Route::post('password-store','MentorController@PasswordStore');n
+        Route::post('password-store','MentorController@PasswordStore');
         Route::get('logout','MentorController@Logout');
     });
 
 });
-
 
 

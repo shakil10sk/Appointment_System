@@ -38,7 +38,6 @@
                       <th class="text-center">Email</th>
                       <th class="text-center">Phone</th>
                       <th class="text-center">Address</th>
-                      <th class="text-center">Image</th>
                       <th class="text-center">Is Paid</th>
                       <th class="text-center">Action</th>
                     </tr>
@@ -55,7 +54,6 @@
                         <td class="text-center">{{ $row['user']['email'] ?? ""}}</td>
                         <td class="text-center">{{ $row['user']['phone'] ?? ""}}</td>
                         <td class="text-center">{{ $row['user']['address'] ?? ""}}</td>
-                        <td class="text-center">{{ $row['user']['image'] ?? ""}}</td>
                         @if($row['is_paid'] == 1)
                         <td class="text-center">Paid</td>
                         @else
@@ -82,19 +80,6 @@
                                 <a href="{{ url('/mentor/appointment-reject/'.$row['id']) }}" class="btn btn-sm btn-danger disabled" title='Appointment was rejected'>Reject</a>&nbsp;&nbsp;
                             @else
                                 <a href="javascript:;" class="btn btn-sm btn-info Appointment" recordid="{{ $row['id'] }}" data-toggle="modal" data-target="#modal-lg">More Info</a>&nbsp;&nbsp;
-
-                        <td class="text-center">
-                            <a href="javascript:;" class="btn btn-sm btn-info Appointment" recordid="{{ $row['id'] }}" data-toggle="modal" data-target="#modal-lg">More Info</a>&nbsp;&nbsp;
-                            @if($row['is_approved'] == 0)
-                                <a href="{{ url('/mentor/appointment-pending/'.$row['id']) }}" class="btn btn-sm btn-primary">Pending</a>&nbsp;&nbsp;
-                                <a href="{{ url('/mentor/appointment-reject/'.$row['id']) }}" class="btn btn-sm btn-danger">Reject</a>&nbsp;&nbsp;
-                            @elseif($row['is_approved'] == 1)
-                                <a href="{{ url('/mentor/appointment-accept/'.$row['id']) }}" class="btn btn-sm btn-success">Accept</a>&nbsp;&nbsp;
-                                <a href="{{ url('/mentor/appointment-reject/'.$row['id']) }}" class="btn btn-sm btn-danger">Reject</a>&nbsp;&nbsp;
-                            @elseif($row['is_approved'] == 2)
-                                <a href="{{ url('/mentor/appointment-reject/'.$row['id']) }}" class="btn btn-sm btn-danger">Reject</a>&nbsp;&nbsp;
-                            @else
-
                                 <a href="javascript:;" class="btn btn-sm btn-secondary disabled">Completed</a>&nbsp;&nbsp;
                             @endif
 
@@ -183,18 +168,17 @@
           <div class="modal-content">
             <div class="modal-header">
               <h4 class="modal-title">Communication Details Send</h4>
-
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
+
             <div class="modal-body">
                 <table class="table table-bordered table-hover">
                     <tbody>
                       <tr data-widget="expandable-table" aria-expanded="false">
                         <input type="hidden" name="hiddenid" id="HiddenId">
                         <textarea name="details" id="" class="form-control" placeholder="Enter Details Informations"></textarea>
-
                       </tr>
                     </tbody>
                   </table>
@@ -205,11 +189,9 @@
             </div>
           </div>
         </form>
-
           <!-- /.modal-content -->
         </div>
         <!-- /.modal-dialog -->
       </div>
-      <!-- /.modal -->
 
 @endsection

@@ -13,4 +13,8 @@ class IndexController extends Controller
         return view('layouts.enterprener.home');
     }
 
+    public function AboutUs(){
+        return view('aboutUs');
+    }
+
 }

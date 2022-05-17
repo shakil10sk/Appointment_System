@@ -15,17 +15,18 @@ class CreateMentorsTable extends Migration
     {
         Schema::create('mentors', function (Blueprint $table) {
             $table->id()->autoIncrement();
-            $table->string('name');
+            $table->string('full_name');
             $table->string('email');
             $table->string('phone')->nullable();
             $table->string('address')->nullable();
-            $table->tinyInteger('status')->nullable();
-            $table->string('category')->nullable();
-            $table->string('spacialist')->nullable();
-            $table->string('expirenced')->nullable();
-            $table->string('documents')->nullable();
+            $table->tinyInteger('status')->default(2);
+            $table->integer('district_id')->nullable();
+            $table->integer('thana_id')->nullable();
+            $table->integer('category_id')->nullable();
+            $table->string('specialist')->nullable();
+            $table->string('time_limit')->nullable();
+            $table->string('fee')->nullable();
             $table->string('image')->nullable();
-            $table->text('available_day')->nullable();
             $table->string('password');
             $table->timestamps();
         });

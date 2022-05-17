@@ -4,8 +4,10 @@
             <div class="container-fluid">
                 <div class="header-menu-content">
                     <nav class="navbar navbar-expand-lg p-0">
-                        <a class="site-logo site-title" href="{{url('/')}}"><img
-                                src="{{ asset('assets/images/logo.png') }}" alt="site-logo"></a>
+                        <a class="site-logo site-title" href="{{url('/')}}">
+                            {{-- <img src="{{ asset('assets/images/logo.png') }}" alt="site-logo"> --}}
+                            StartUp Clinic
+                        </a>
                         <div class="language-select d-block d-lg-none ml-auto">
                             <select class="nice-select langSel language-select">
                                 <option value="en" selected>English</option>
@@ -22,29 +24,29 @@
                             <ul class="navbar-nav main-menu ml-auto mr-auto">
                                 <li class="@if(Request::url() === url('/')) active @endif"><a
                                         href="{{url('/')}}">Home</a></li>
-                                <li class="@if(Request::url() === route('mentor.list')) active @endif"><a
-                                        href="{{ route('mentor.list') }}">Doctors</a></li>
-                                <li class=""><a href="#Blog">Blog</a></li>
-                                <li class=""><a href="#Contact">Contact</a></li>
+                                <li class="@if(Request::url() === route('book.mentor.list')) active @endif"><a
+                                        href="{{ route('book.mentor.list') }}">Mentors</a></li>
+                                <li class=""><a href="{{route('about')}}">About Us</a></li>
+                                <li class=""><a href="#Contact-US">Contact US</a></li>
                             </ul>
-                            <div class="language-select d-none d-lg-block">
+                            {{-- <div class="language-select d-none d-lg-block">
                                 <select class="nice-select langSel language-select">
                                     <option value="en" selected>English</option>
                                     <option value="bn">Bangla</option>
                                     <option value="hn">Hindi</option>
                                 </select>
-                            </div>
-                            <div class="header-bottom-action">
-                                <a href="#Book" class="cmn-btn">Book Now</a>
-                            </div>
+                            </div> --}}
+                            {{-- <div class="header-bottom-action">
+                                <a href="{{ url('mentor') }}" class="cmn-btn">Mentor Login</a>
+                            </div> --}}
 
                             @guest
                             <div class="header-bottom-action">
                                 <a href="{{url('login')}}" class="cmn-btn">Login Now</a>
                             </div>
-                            <div class="header-bottom-action">
+                            {{-- <div class="header-bottom-action">
                                 <a href="{{url('register')}}" class="cmn-btn">Register Now</a>
-                            </div>
+                            </div> --}}
                             @else
                             <div class="dropdown">
                                 <button class="btn btn-secondary dropdown-toggle cmn-btn" type="button"

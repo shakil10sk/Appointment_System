@@ -40,9 +40,6 @@
                 <a href="{{ url('/mentor/payments-info') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Payments Info</p>
-                <a href="./index3.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Dashboard v3</p>
                 </a>
               </li>
             </ul>

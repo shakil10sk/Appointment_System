@@ -15,7 +15,7 @@
 @include('layouts.enterprener.header')
 <!-- header-section end -->
 
-<a href="#" class="scrollToTop"><i class="fa fa-angle-up"></i></a>
+<a href="#" class="scrollToTop" style="background-color: #118b57;border:1 px solid #118b57"><i class="fa fa-angle-up"></i></a>
     <div class="all-sections">
 
 @yield('main-content')

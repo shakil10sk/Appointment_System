@@ -5,6 +5,11 @@ namespace App\Http\Controllers\Mentor;
 use App\Appointment;
 use App\Http\Controllers\Controller;
 use App\Mentor;
+use App\bd_location;
+use App\category;
+use DB;
+use Carbon\Carbon;
+use App\avilableDay;
 use App\PaymentSystem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -36,17 +41,23 @@ class MentorController extends Controller
 
     //Registration
     public function Registration(){
-        return view('mentor.registration');
+
+        $district_location = DB::table('bd_locations')
+                                ->where('type',2)
+                                ->wherein('parent_id',[1,2,3,4,5,6,7,8])
+                                ->orderBy('id','ASC')
+                                ->get();
+
+        $category = Category::orderBy('id','ASC')->get();
+        // $upazila_location = bd_location::where(['type'=> 2,'parent_id' => null])->orderBy('id','ASC')->get();
+        // dd($category);
+        return view('mentor.registration',compact('district_location','category'));
     }
 
     //RegistrationStore
     public function RegistrationStore(Request $request){
 
-        // return $request->all();
-
-        $spacialist = json_encode($request['spacialist']);
-        $available_day = json_encode($request['available_day']);
-
+        $specialist = $request->specialist[0];
 
         //document insert
         if($request->file('document')){
@@ -69,26 +80,57 @@ class MentorController extends Controller
 
         }
 
-        $mentor = new Mentor;
-        $mentor->name = $request['name'];
-        $mentor->phone = $request['phone'];
-        $mentor->email = $request['email'];
-        $mentor->address = $request['address'];
-        $mentor->category = $request['category'];
-        $mentor->spacialist = $spacialist;
-        $mentor->expirenced = $request['expirenced'];
-        $mentor->documents = $filename;
-        $mentor->image = $filename2;
-        $mentor->available_day = $available_day;
-        $mentor->password = Hash::make($request['password']);
-        $mentor->save();
-        return redirect('/mentor');
+        DB::beginTransaction();
+        try {
+            $mentor = new Mentor;
+            $mentor->full_name = $request['full_name'];
+            $mentor->phone = $request['phone'];
+            $mentor->email = $request['email'];
+            $mentor->address = $request['address'];
+            $mentor->district_id = $request['district_id'];
+            $mentor->thana_id = $request['thana_id'];
+            $mentor->category_id = $request['category_id'];
+            $mentor->specialist = $specialist;
+            $mentor->time_limit = $request['time_limit'];
+            $mentor->fee = $request['fee'];
+            $mentor->time_limit = $request['time_limit'];
+            $mentor->documents = $filename;
+            $mentor->image = $filename2;
+            $mentor->password = Hash::make($request['password']);
+            $mentor->save();
+            $last_id = $mentor->id;
+
+            $avilable = [];
+            if(!is_null($request->avilable_day)){
+                for ($i=0; $i < count($request->avilable_day); $i++) {
+                    avilableDay::create([
+                        'mentor_id' => $last_id,
+                        'date' => Carbon::today(),
+                        'day' => $request->avilable_day[$i],
+                        'from_time' => $request->start_time[$i],
+                        'to_time' => $request->end_time[$i],
+                        'created_at' => Carbon::now(),
+                    ]);
+                }
+            }
+
+            DB::commit();
+            return redirect('/mentor')->with('success','Registration success');
+
+        } catch (\Throwable $th) {
+            DB::rollback();
+            //throw $th;
+            dd($th);
+            return redirect()->back()->with('error','Data Inserted Failed. Please try again !!! ' . $th);
+        }
+
     }
 
     //AppointLists
     public function AppointLists(){
         $mentor_id = Auth::guard('mentor')->user()->id;
         $appoints = Appointment::with('user')->latest()->where('mentor_id',$mentor_id)->get();
+        // return $appoints;
         return view('mentor.appointment_lists',compact('appoints'));
     }
 
@@ -185,9 +227,26 @@ class MentorController extends Controller
             return redirect()->back();
         }
 
+    }
 
+    public function getThana(Request $request){
 
+        $getThana = bd_location::where(['parent_id'=> $request->id,'type'=>3])->get();
+       if($getThana){
+        return response()->json([
+            'status' => 'success',
+            'msg' => 'successfully data found',
+            'data' => $getThana,
+        ]);
+       }else{
+        return response()->json([
+            'status' => 'error',
+            'msg' => 'data not found',
+            'data' => "",
+        ]);
+       }
 
     }
+
 
 }

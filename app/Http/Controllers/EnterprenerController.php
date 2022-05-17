@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Menotr;
+use App\Mentor;
 use App\User;
 use App\Appointment;
 use App\PaymentSystem;
+use App\Category;
 use Carbon\Carbon;
 use Auth;
 use DB;
@@ -17,14 +18,35 @@ class EnterprenerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $category_list = DB::table('menotrs')->select('category')->groupBy('category')->get();
-        $mentor_list = Menotr::orderBy('id','DESC')->take(50)->get();
+
+        $category_list = Category::all();
+
+        $mentor_list = Mentor::with('category','available_days')
+                                ->when(isset($request->district_id),function($q) use($request){
+                                    $q->where('district_id',$request->district_id);
+                                })
+                                ->when(isset($request->thana_id),function($q) use($request){
+                                    $q->where('thana_id',$request->thana_id);
+                                })
+                                ->when(isset($request->category),function($q) use($request){
+                                    $q->where('category_id',$request->category);
+                                })
+                                ->take(20)
+                                ->get();
+
+
+        $district = DB::table('bd_locations')
+                                ->where('type',2)
+                                ->wherein('parent_id',[1,2,3,4,5,6,7,8])
+                                ->orderBy('id','ASC')
+                                ->get();
 
         return view('enterprener.mentor_list',[
             'mentor_list' => $mentor_list,
             'category_list' => $category_list,
+            'district' => $district,
         ]);
     }
 
@@ -35,10 +57,18 @@ class EnterprenerController extends Controller
      */
     public function showDoctor($id)
     {
-        $mentor_info = Menotr::findOrFail($id);
+        // $mentor_info = Mentor::findOrFail($id);
+        $mentor_info = DB::table('mentors AS MN')
+                        ->join('categories AS CAT','CAT.id','MN.category_id')
+                        ->select('MN.*','CAT.category_name as category')
+                        ->where('MN.id',$id)
+                        ->first();
+
+        $avilable_day = DB::table('avilable_days')->where('mentor_id',$mentor_info->id)->get() ?? null;
 
         return view('enterprener.book',[
             'mentor_info' => $mentor_info,
+            'avilable_days' => $avilable_day,
         ]);
     }
 
@@ -104,10 +134,10 @@ class EnterprenerController extends Controller
     public function Profile($id)
     {
         $profile_info = User::findOrFail($id);
-        $appointment = Appointment::where(['user_id' => $id,'is_approved'=> 1,'is_paid'=> 0])->first() ?? null;
+        $appointment = Appointment::where(['user_id' => $id])->first() ?? null;
         $mentor_info = null;
         if(!is_null($appointment)){
-            $mentor_info = Menotr::findOrFail($appointment->mentor_id);
+            $mentor_info = Mentor::findOrFail($appointment->mentor_id);
         }
         return view('enterprener.profile',[
             'profile_info' => $profile_info,
@@ -115,7 +145,13 @@ class EnterprenerController extends Controller
             'mentor_info' => $mentor_info,
         ]);
     }
-  
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function edit($id)
     {
         //

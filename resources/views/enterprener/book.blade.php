@@ -13,12 +13,12 @@
         <div class="row align-items-center">
             <div class="col-lg-6">
                 <div class="banner-content">
-                    <h2 class="title">{{$mentor_info->name}}</h2>
+                    <h2 class="title">{{$mentor_info->full_name}}</h2>
                     <div class="breadcrumb-area">
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="{{ url('/') }}">Home</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">{{$mentor_info->name}} - Booking
+                                <li class="breadcrumb-item active" aria-current="page">{{$mentor_info->full_name}} - Mentor Hire
                                 </li>
                             </ol>
                         </nav>
@@ -41,12 +41,13 @@
                 <div class="booking-item d-flex flex-wrap align-items-center justify-content-between mb-5">
                     <div class="booking-left d-flex align-items-center">
                         <div class="booking-thumb">
-                            <img src="{{asset('assets/images/default_doctor.jpg')}}" alt="">
+                            <img src="{{asset('images/mentor/photos/'.$mentor_info->image)}}" alt="">
+
                             <a href="#0" class="fav-btn"><i class="far fa-bookmark"></i></a>
                         </div>
                         <div class="booking-content">
                             <span class="sub-title"><a href="#">{{$mentor_info->category}}</a></span>
-                            <h5 class="title">{{$mentor_info->name}} <i class="fas fa-check-circle"></i></h5>
+                            <h5 class="title">{{$mentor_info->full_name}} <i class="fas fa-check-circle"></i></h5>
                             <p>{{$mentor_info->specialist}}</p>
                             <div class="booking-ratings">
                                 <i class="fas fa-star"></i>
@@ -56,9 +57,21 @@
                                 <i class="fas fa-star"></i>
                             </div>
                             <ul class="booking-list">
-                                <li><i class="icon-direction-alt"></i>{{$mentor_info->address}}</li>
-                                <li><i class="las la-phone"></i> {{$mentor_info->phone}}</li>
+                                {{-- <li><i class="icon-direction-alt"></i>{{$mentor_info->address}}</li> --}}
+                                {{-- <li><i class="las la-phone"></i> {{$mentor_info->phone}}</li> --}}
+                                <li>Available Days
+                                    <ul>
+                                        @php
+                                        $day = [];
+                                            foreach ($avilable_days as $item){
+                                                array_push($day,$item->day);
+                                                echo '<li>'.$item->day.'--'.$item->from_time.'--'.$item->to_time.'</li>';
+                                            }
+                                        @endphp
+                                    </ul>
+                                </li>
                             </ul>
+
                         </div>
                     </div>
                     <div class="booking-right">
@@ -69,19 +82,25 @@
                                     {{Carbon\Carbon::parse($mentor_info->created_at)->format('Y-m-d')}}
                                      {{-- year ago --}}
                                 </li>
-                                <li><span><i class="fas fa-wallet"></i>Fees : 15 $<span></li>
+                                <li><span><i class="fas fa-wallet"></i>Fees : {{$mentor_info->fee}}<span></li>
                             </ul>
-                            <ul class="booking-tag">
+                            {{-- <ul class="booking-tag">
                                 <li><a href="https://www.facebook.com/" target="_blank"><i
                                             class="fab fa-facebook"></i></a></li>
                                 <li><a href="https://www.instagram.com/accounts/login/" target="_blank"><i
                                             class="fab fa-instagram"></i></a></li>
                                 <li><a href="https://www.youtube.com/" target="_blank"><i
                                             class="fab fa-youtube"></i></a></li>
-                            </ul>
-                            <div class="booking-btn">
-                                <a href="#" class="border-btn active">Appointment Available</a>
-                            </div>
+                            </ul> --}}
+                            @if(in_array(Carbon\Carbon::today()->format('l'),$day))
+                                <div class="booking-btn">
+                                    <a href="#" class="border-btn active">Appointment Available</a>
+                                </div>
+                            @else
+                                <div class="booking-btn">
+                                    <a href="#" class="border-btn text-danger">Appointment Not Available</a>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -100,18 +119,18 @@
                     <div class="overview-tab-wrapper">
                         <ul class="tab-menu">
                             <li>Overview</li>
-                            <li class="active">Booking</li>
-                            <li>Review</li>
+                            <li class="active">Hire</li>
+                            {{-- <li>Review</li> --}}
                         </ul>
                         <div class="tab-cont">
                             <div class="tab-item">
                                 <div class="overview-tab-content ml-b-30">
-                                    <div class="overview-content">
+                                    {{-- <div class="overview-content">
                                         <h5 class="title">About Me</h5>
                                         <p>{{$mentor_info->details}}</p>
-                                    </div>
+                                    </div> --}}
                                     <div class="overview-content">
-                                        <h5 class="title">Education</h5>
+                                        <h5 class="title">Specialist</h5>
                                         <div class="overview-box">
                                             <ul class="overview-list">
                                                 <li>
@@ -119,7 +138,7 @@
                                                         <div class="before-circle"></div>
                                                     </div>
                                                     <div class="overview-details">
-                                                        <h6 class="title">{{$mentor_info->spacialist}}</h6>
+                                                        <h6 class="title">{{$mentor_info->specialist}}</h6>
                                                         {{-- <div>MBBS</div>
                                                         <span>2005 - 2007 (2 years)</span> --}}
                                                     </div>
@@ -128,7 +147,7 @@
                                         </div>
                                     </div>
                                     <div class="overview-content">
-                                        <h5 class="title">Work & Experience</h5>
+                                        <h5 class="title">Department</h5>
                                         <div class="overview-box">
                                             <ul class="overview-list">
                                                 <li>
@@ -139,24 +158,24 @@
                                                         <h6 class="title">
                                                             {{$mentor_info->category}}</h6>
                                                         {{-- <div>Professor &amp; Head</div> --}}
-                                                        <span>{{$mentor_info->expirenced}} years</span>
+                                                        {{-- <span>{{$mentor_info->expirenced}} years</span> --}}
                                                     </div>
                                                 </li>
                                             </ul>
                                         </div>
                                     </div>
-                                    <div class="overview-content">
+                                    {{-- <div class="overview-content">
                                         <h5 class="title">Specializations</h5>
                                         <div class="overview-footer-area d-flex flex-wrap justify-content-between">
                                             <ul class="overview-footer-list">
                                             </ul>
                                         </div>
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </div>
                             <div class="tab-item">
                                 <div class="overview-tab-content">
-                                    <div
+                                    {{-- <div
                                         class="overview-booking-header d-flex flex-wrap justify-content-between ml-b-10">
                                         <div class="overview-booking-header-left mrb-10">
                                             <h4 class="title">Available Schedule</h4>
@@ -167,7 +186,7 @@
                                             </ul>
                                         </div>
 
-                                    </div>
+                                    </div> --}}
 
                                     <form action="{{ route('appointment') }}" class="appointment-from" method="post" enctype="multipart/form-data">
                                         @csrf
@@ -177,11 +196,11 @@
                                                 <div
                                                     class="overview-date-area d-flex flex-wrap align-items-center justify-content-between">
                                                     <div class="overview-date-header">
-                                                        <h5 class="title">Choose Your Date & Time</h5>
+                                                        <h5 class="title">Choose Your Date</h5>
                                                     </div>
 
                                                     <div class="overview-date-select">
-                                                        <input type="date" id="appointment_date" class="form-control date-select @error('appointment_date') is-invalid @enderror" name="appointment_date" onchange="confirmBookingData()" id="appointment_date" required>
+                                                        <input type="date" id="appointment_date" style="background-color: #118b57;color:aliceblue" class="form-control @error('appointment_date') is-invalid @enderror" name="appointment_date" onchange="confirmBookingData()" id="appointment_date" required>
 
                                                         @error('appointment_date')
                                                             <span class="invalid-feedback" role="alert">
@@ -198,7 +217,9 @@
                                                             <option value="2022-05-15">2022-05-15</option>
                                                             <option value="2022-05-16">2022-05-16</option>
                                                         </select> --}}
+
                                                     </div>
+
                                                 </div>
                                             </div>
                                             {{-- <ul class="clearfix">
@@ -509,7 +530,7 @@
                                             <div class="row justify-content-center ml-b-30">
                                                 <div class="col-lg-6 mrb-30">
                                                     <div class="booking-appoint-form-area">
-                                                        <h4 class="title">Appointment Form</h4>
+                                                        <h4 class="title">Get An Appointment</h4>
                                                         <form class="booking-appoint-form">
                                                             <div class="row">
                                                                 <div class="col-lg-12 form-group">
@@ -517,14 +538,16 @@
                                                                         placeholder="Appontment Reason*"></textarea>
                                                                 </div>
                                                                 <div class="col-lg-12 form-group">
+                                                                    <label for="document">Necessary Documents</label>
                                                                     <input type="file" name="document" id="document">
                                                                 </div>
                                                                 <div class="col-lg-12 form-group">
                                                                     <div class="form-group">
+                                                                        <label for="methode">Comunication Phase <span class="text-danger">*</span> </label>
                                                                       <select class="form-control @error('methode') is-invalid @enderror" name="methode" onchange="confirmBookingData()" id="methode">
-                                                                        <option selected value="">Methode*</option>
-                                                                        <option value="0">Off-Line</option>
-                                                                        <option value="1">On-Line</option>
+                                                                        <option selected value="">How You want to Comunicate</option>
+                                                                        <option value="0">OffLine</option>
+                                                                        <option value="1">OnLine</option>
                                                                       </select>
                                                                       @error('methode')
                                                                             <span class="invalid-feedback" role="alert">
@@ -535,8 +558,9 @@
                                                                 </div>
                                                                 <div class="col-lg-12 form-group" id="medium_select">
                                                                     <div class="form-group">
+                                                                        <label for="">Select Medium<span class="text-danger">*</span>  </label>
                                                                         <select class="form-control" name="medium" id="medium">
-                                                                          <option selected value="">Medium*</option>
+                                                                          <option selected value="">Select Comunicate Medium</option>
                                                                           <option value="0">Audio</option>
                                                                           <option value="1">Video</option>
                                                                           <option value="2">Text</option>
@@ -560,7 +584,7 @@
                                                                     <div
                                                                         class="col-lg-12 form-group d-flex flex-wrap">
                                                                         <button type="submit" @if(!isset(Auth::user()->id)) disabled style="background-color: #cccccc"  @endif class="cmn-btn payment-system"
-                                                                        >Apply For APpointment</button>
+                                                                        >Apply For Appointment</button>
                                                                     </div>
                                                                     @if(!isset(Auth::user()->id))
                                                                         <div
@@ -574,11 +598,11 @@
                                                 </div>
                                                 <div class="col-lg-6 mrb-30">
                                                     <div class="booking-confirm-area">
-                                                        <h4 class="title">Confirm Your Booking</h4>
+                                                        <h4 class="title">Confirm Your Hire</h4>
                                                         <ul class="booking-confirm-list">
                                                             <li><span>Date & Time</span> : <span class="custom-color"
                                                                     id="date"></span></li>
-                                                            <li><span>Fees</span> : 15 $</li>
+                                                            <li><span>Fees</span> : {{$mentor_info->fee}}</li>
                                                         </ul>
                                                         <div class="booking-confirm-btn">
                                                             <a href="javascript:void(0)"

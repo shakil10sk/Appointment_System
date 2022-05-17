@@ -137,6 +137,7 @@
         "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
       });
 
+
     });
   </script>
   <script>
@@ -198,6 +199,5 @@
 
             })
         </script>
-
 </body>
 </html>
