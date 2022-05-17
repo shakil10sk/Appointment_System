@@ -4,7 +4,7 @@
 
         <!-- banner-section start -->
         <section class="inner-banner-section bg-overlay-white banner-section bg_img"
-            data-background="{{ asset('assets/images/banner2.jpg') }}">
+            data-background="{{ asset('assets/images/demo_banner.jpg') }}">
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-lg-6">
