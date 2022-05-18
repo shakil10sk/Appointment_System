@@ -16,7 +16,7 @@ class CreateAvilableDaysTable extends Migration
         Schema::create('avilable_days', function (Blueprint $table) {
             $table->id();
             $table->tinyInteger('mentor_id');
-            $table->date('date');
+            $table->date('date')->nullable();
             $table->string('day');
             $table->time('from_time');
             $table->time('to_time');

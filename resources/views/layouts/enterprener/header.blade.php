@@ -56,13 +56,19 @@
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
 
-                                    <button class="dropdown-item" type="button"><a
+                                    <button class="dropdown-item" type="button">
+                                        <a
                                             href="{{url('user/profile/'.Auth::user()->id)}}">Profile</a></button>
+
+                                            <button class="dropdown-item" type="button">
+                                                <a
+                                                    href="{{route('memberList')}}">Team </a></button>
 
                                     <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
+
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
                                     </form>

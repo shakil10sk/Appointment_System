@@ -7,6 +7,7 @@ use App\Mentor;
 use App\User;
 use App\Appointment;
 use App\PaymentSystem;
+use App\TeamMember;
 use App\Category;
 use Carbon\Carbon;
 use Auth;
@@ -145,6 +146,56 @@ class EnterprenerController extends Controller
             'mentor_info' => $mentor_info,
         ]);
     }
+
+    public function storeMember(Request $request){
+
+        $request->validate([
+            'name' => 'required',
+            'phone' => 'required',
+        ]);
+
+        $member = new TeamMember();
+
+        $member['user_id'] = Auth::user()->id ?? null;
+        $member['name'] = $request->name;
+        $member['email'] = $request->email;
+        $member['phone'] = $request->phone;
+        
+        $member['created_at'] = Carbon::now();
+
+        if($request->hasFile('image')) {
+            
+            $destinationPath = public_path( 'assets/images/member' );
+            $file = $request->image;
+            $fileName = time() . '.'.$file->clientExtension();
+            $file->move($destinationPath, $fileName );
+
+            $member['image'] = $fileName;
+        }
+        
+
+        if($member->save()){
+            return redirect()->back()->with('message','Added member successfully');
+        }else{
+            return redirect()->back()->with('message','Try again');
+        }
+
+    }
+
+    public function memberList(){
+        $members= TeamMember::all();
+        return view ('enterprener.member_list', compact('members'));
+    }
+
+    public function deleteMember($id){
+        // dd($id);
+        $member = TeamMember::findorFail($id);
+        $member->delete();
+        return redirect()->back()->with('message','Delete member successfully');
+
+
+    }
+
 
     /**
      * Show the form for editing the specified resource.

@@ -70,6 +70,7 @@ class AppointmentController extends Controller
         }
     }
 
+   
     /**
      * Display the specified resource.
      *

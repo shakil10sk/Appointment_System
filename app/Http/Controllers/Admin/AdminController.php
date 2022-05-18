@@ -42,7 +42,7 @@ class AdminController extends Controller
     public function acceptStatus($id){
 
         // $status=Mentor::select('status')->where('id',$id)->first();
-        $status= DB::table('Mentors')->where('id',$id)->first()->status;
+        $status= DB::table('mentors')->where('id',$id)->first()->status;
         // dd($status);
 
         // dd($status);

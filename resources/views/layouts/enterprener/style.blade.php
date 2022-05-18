@@ -47,6 +47,13 @@
     <!-- <link rel="stylesheet" href="https://script.viserlab.com/docrib/assets/templates/basic/css/color.php?color1=FF8787"> -->
     <!-- <link rel="stylesheet" href="assets/templates/basic/css/color.css"> -->
 
+
+
+
+
+
+
+    
     @yield('style')
 
     <meta name="title" Content="Appointment System - Home">

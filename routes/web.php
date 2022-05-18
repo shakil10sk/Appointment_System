@@ -32,6 +32,9 @@ Route::prefix('/user')->group(function(){
         Route::post('appointment','AppointmentController@store')->name('appointment');
         Route::get('profile/{id}','EnterprenerController@profile')->name('user.profile');
         Route::post('payment','EnterprenerController@Payment');
+        Route::post('member/','EnterprenerController@storeMember')->name('member.save');
+        Route::get('memberlist/','EnterprenerController@memberList')->name('memberList');
+        Route::get('delete_member/{id}','EnterprenerController@deleteMember')->name('deleteMember');
     });
 });
 

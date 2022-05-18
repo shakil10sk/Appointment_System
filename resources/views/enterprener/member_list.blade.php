@@ -13,58 +13,44 @@
             
             
             <div class="team-item d-flex flex-wrap align-items-center justify-content-left">
-                <div class="team-thumb">
-                    <img class="img img-fluid" src="{{ asset('assets/images/user/'.$profile_info->image) }}"
-                        alt="doctor-image">
-                    <div class="team-thumb-overlay">
-                        <ul class="social-icon">
-                            <li><a href="https://www.facebook.com/" target="_blank"><i class="fab fa-facebook"></i></a>
-                            </li>
-                            <li><a href="https://www.instagram.com/accounts/login/" target="_blank"><i
-                                        class="fab fa-instagram"></i></a></li>
-                            <li><a href="https://www.youtube.com/" target="_blank"><i class="fab fa-youtube"></i></a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+                <h4>Team Member List</h4>
+
+                <table class="table  table-bordered">
+                    <thead>
+                        <tr>
+                            <th scope="col">Sl</th>
+                          <th scope="col">Member Name</th>
+                          <th scope="col">Email</th>
+                          <th scope="col">Phone</th>
+                          <th scope="col">Action</th>
+                          
+                        </tr>
+                      </thead>
+                      <tbody>
+                          @foreach ($members as $data)
+                              
+                          
+                        <tr>
+                          <th scope="row">{{$data->id}}</th>
+                          <td>{{$data->name}}</td>
+                          <td>{{$data->email}}</td>
+                          <td>{{$data->phone}}</td>
+                          <td>
+                              <a href="{{route('deleteMember',[$data->id])}}" class="btn btn-danger rounded">Delete</a>
+                          </td>
+                        </tr>
+                        @endforeach
+                        
+                        
+                      </tbody>
+
+                </table>
                 
-                <div class="team-content">
-                    <h5 class="title">{{ $profile_info->name }}</h5>
-                    <h5 class="title">Start-Up Name: {{ $profile_info->startup_name }}</h5>
-                    <h6 class="title">Phone</h6>
-                    <p>{{ $profile_info->phone }}</p>
-                    <h6 class="title">Address</h6>
-                    <p>{{ $profile_info->address }}</p>
-
-                    @if(!is_null($appointment))
-                       <h4> Appointment To : {{$mentor_info->full_name}}</h2>
-                        {{-- <br>
-                       <h4> Fee : {{$mentor_info->fee}}</h3> --}}
-                    @endif
-
-                    @if(!is_null($appointment) &&  $appointment->is_paid == 0)
-                    <h4> Fee : {{$mentor_info->fee}}</h3>
-                    <div class="row">
-                        <div class="col-md-4 mx-auto">
-                         <div class="" style="text-align: right">
-                             <button class="btn btn-md btn-danger" data-toggle="modal" data-target="#PaymentModal" type="button">Pay Now</button>
-                         </div>
-                        </div>
-                    </div>
-                    @endif
-                    @if(isset($appointment->is_paid) && $appointment->is_paid == 1)
-                        <h4> Comunicate Link :</h3>
-                            <a  href="{{$appointment->details}}" class="btn btn-info btn-md">Click To Talk</a>
-                        <h4> Appointment Date :</h3>
-                            {{$appointment->date}}
-                            {{-- {{\Carbon\Carbon::parse($appointment->date)->format('d/m/Y')}} --}}
-
-                    @endif
-                    
-                    <br>
-                    
-                </div>
                 
+                <div class="justify-content-right mt-2 mb-3" style="text-align: right;float:right">
+                    <a href="" class="btn btn-success btn-sm rounded"  data-toggle="modal" data-target="#modal-member">Add new member</a>
+            
+                </div>
                 
 
             </div>
